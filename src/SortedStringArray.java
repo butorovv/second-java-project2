@@ -1,51 +1,48 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SortedStringArray {
-    public String[] array;
-    public int size;
+    public ArrayList<String> array;
 
     public SortedStringArray() {
-        array = new String[10];
-        size = 0;
+        array = new ArrayList<>();
     }
 
     public void add(String element) {
-        ensureCapacity();
-        int index = size;
-        for (int i = 0; i < size; i++) {
-            if (element.length() < array[i].length()) {
-                index = i;
+        boolean t = false;
+        for (int i = 0; i < array.size(); i++) {
+            if (element.length() < array.get(i).length())  {
+                array.add(i, element);
+                t = true;
+                break;
+            }
+            else if (element.length() == array.get(i).length() && element.compareTo(array.get(i)) < 0) {
+                array.add(i, element);
+                t = true;
                 break;
             }
         }
-        for (int i = size; i > index; i--) {
-            array[i] = array[i - 1];
+        if (!t){
+            array.add(element);
         }
-        array[index] = element;
-        size++;
     }
 
     public String getMax() {
-        if (size == 0) {
+        if (array.size() == 0) {
             throw new IllegalStateException("Array is empty");
         }
-        return array[size - 1];
+        return array.get(array.size() - 1);
     }
 
     public double getAverageLength() {
-        if (size == 0) {
+        int arraysize = array.size();
+        if (arraysize == 0) {
             throw new IllegalStateException("Array is empty");
         }
         int totalLength = 0;
-        for (int i = 0; i < size; i++) {
-            totalLength += array[i].length();
+        for (int i = 0; i < arraysize; i++) {
+            totalLength += array.get(i).length();
         }
-        return (double) totalLength / size;
-    }
-
-    private void ensureCapacity() {
-        if (size == array.length) {
-            array = Arrays.copyOf(array, size * 2);
-        }
+        return (double) totalLength / arraysize;
     }
 }
